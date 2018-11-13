@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace HotChocolate.Language
 {
@@ -6,14 +7,15 @@ namespace HotChocolate.Language
         : IValueNode<string>
         , IEquatable<FloatValueNode>
     {
-        public FloatValueNode(
-            string value)
+        public FloatValueNode(double value)
+            : this(value.ToString("E", CultureInfo.InvariantCulture))
+        { }
+
+        public FloatValueNode(string value)
             : this(null, value)
-        {
-        }
-        public FloatValueNode(
-            Location location,
-            string value)
+        { }
+
+        public FloatValueNode(Location location, string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -27,7 +29,9 @@ namespace HotChocolate.Language
         }
 
         public NodeKind Kind { get; } = NodeKind.FloatValue;
+
         public Location Location { get; }
+
         public string Value { get; }
 
         /// <summary>
