@@ -7,45 +7,33 @@ namespace HotChocolate.Language
     {
         public ArgumentNode(string name, string value)
             : this(null, new NameNode(name), new StringValueNode(value))
-        {
-        }
+        { }
 
         public ArgumentNode(string name, int value)
             : this(null, new NameNode(name), new IntValueNode(value))
-        {
-        }
+        { }
 
         public ArgumentNode(string name, bool value)
             : this(null, new NameNode(name), new BooleanValueNode(value))
-        {
-        }
+        { }
 
         public ArgumentNode(string name, double value)
             : this(null, new NameNode(name), new FloatValueNode(value))
-        {
-        }
+        { }
 
         public ArgumentNode(string name)
             : this(null, new NameNode(name), NullValueNode.Default)
-        {
-        }
+        { }
 
         public ArgumentNode(string name, IValueNode value)
             : this(null, new NameNode(name), value)
-        {
-        }
+        { }
 
-        public ArgumentNode(
-            NameNode name,
-            IValueNode value)
+        public ArgumentNode(NameNode name, IValueNode value)
             : this(null, name, value)
-        {
-        }
+        { }
 
-        public ArgumentNode(
-            Location location,
-            NameNode name,
-            IValueNode value)
+        public ArgumentNode(Location location, NameNode name, IValueNode value)
         {
             if (name == null)
             {
