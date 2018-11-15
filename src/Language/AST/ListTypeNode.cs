@@ -5,9 +5,11 @@ namespace HotChocolate.Language
     public sealed class ListTypeNode
         : INullableType
     {
-        public ListTypeNode(
-            Location location,
-            ITypeNode type)
+        public ListTypeNode(ITypeNode type)
+            : this(null, type)
+        { }
+
+        public ListTypeNode(Location location, ITypeNode type)
         {
             if (type == null)
             {

@@ -5,9 +5,15 @@ namespace HotChocolate.Language
     public sealed class NamedTypeNode
         : INullableType
     {
-        public NamedTypeNode(
-            Location location,
-            NameNode name)
+        public NamedTypeNode(string name)
+            : this(new NameNode(name))
+        { }
+
+        public NamedTypeNode(NameNode name)
+            : this(null, name)
+        { }
+
+        public NamedTypeNode(Location location, NameNode name)
         {
             if (name == null)
             {
