@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HotChocolate.Utilities;
 using HotChocolate.Types;
 using System.Linq;
@@ -18,24 +19,24 @@ namespace HotChocolate.Configuration
                 RegisterTypes(typeof(TQuery),typeof(TMutation),typeof(TSubscription));
         }
 
-        public void RegisterTypes(Type query, Type mutation = null, Type subscription = null)
+        public void RegisterTypes(Type queryType, Type mutationType = null, Type subscriptionType = null)
         {
-            var graphQlTypes = System.Reflection.Assembly.GetCallingAssembly()
+            IEnumerable<Type> graphQlTypes = System.Reflection.Assembly.GetExecutingAssembly()
                 .GetTypes()
                 .Where(x => !x.IsAbstract &&
                             (typeof(INamedType).IsAssignableFrom(x)
                             ));
 
 
-            foreach (var type in graphQlTypes)
+            foreach (Type type in graphQlTypes)
             {
-                var namedType = RegisterObjectType(type);
+                INamedType namedType = RegisterObjectType(type);
 
-                if(type.FullName == query.FullName)
+                if(type.FullName == queryType.FullName)
                     Options.QueryTypeName = namedType.Name;
-                else if(type.FullName == mutation?.FullName)
+                else if(type.FullName == mutationType?.FullName)
                     Options.MutationTypeName = namedType.Name;
-                else if(type.FullName == subscription?.FullName)
+                else if(type.FullName == subscriptionType?.FullName)
                     Options.SubscriptionTypeName = namedType.Name;
             }
             
