@@ -6,7 +6,12 @@ namespace HotChocolate.Configuration
     public interface ICodeFirstConfiguration
         : IFluent
     {
-        
+        void RegisterTypes<TQuery>();
+        void RegisterTypes<TQuery, TMutation>();
+        void RegisterTypes<TQuery, TMutation, TSubscription>();
+
+        void RegisterTypes(Type query, Type mutation = null, Type subscription = null);
+
         void RegisterType<T>();
         void RegisterType(Type type);
        

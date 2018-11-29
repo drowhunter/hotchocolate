@@ -1,12 +1,45 @@
 using System;
 using HotChocolate.Utilities;
 using HotChocolate.Types;
+using System.Linq;
 
 namespace HotChocolate.Configuration
 {
     internal partial class SchemaConfiguration
     {
         #region RegisterType - Type
+        public void RegisterTypes<TQuery>(){
+                RegisterTypes(typeof(TQuery));
+        }
+        public void RegisterTypes<TQuery, TMutation>(){
+                RegisterTypes(typeof(TQuery),typeof(TMutation));
+        }
+        public void RegisterTypes<TQuery, TMutation, TSubscription>(){
+                RegisterTypes(typeof(TQuery),typeof(TMutation),typeof(TSubscription));
+        }
+
+        public void RegisterTypes(Type query, Type mutation = null, Type subscription = null)
+        {
+            var graphQlTypes = System.Reflection.Assembly.GetCallingAssembly()
+                .GetTypes()
+                .Where(x => !x.IsAbstract &&
+                            (typeof(INamedType).IsAssignableFrom(x)
+                            ));
+
+
+            foreach (var type in graphQlTypes)
+            {
+                var namedType = RegisterObjectType(type);
+
+                if(type.FullName == query.FullName)
+                    Options.QueryTypeName = namedType.Name;
+                else if(type.FullName == mutation?.FullName)
+                    Options.MutationTypeName = namedType.Name;
+                else if(type.FullName == subscription?.FullName)
+                    Options.SubscriptionTypeName = namedType.Name;
+            }
+            
+        }
 
         public void RegisterType<T>()
         {
